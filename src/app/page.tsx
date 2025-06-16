@@ -17,9 +17,8 @@ export default function Home() {
   }
   );
 
-  if (error) return "An error has occurred.";
-  if (isLoading) return "Loading...";
-  console.log(data);
+  if (error) return <div> An error has occurred.</div>;
+  if (isLoading) return <div>Loading ....</div>;
   return (
     <div>
       <ul>
@@ -27,7 +26,7 @@ export default function Home() {
         <li style={{ margin: "20px 0" }}><Link href={"/instagram"}> Instagram</Link></li>
         <li><Link href={"/youtube"}> YouTube</Link></li>
       </ul>
-      <AppTable />
+      <AppTable blogs={data} />
     </div>
   )
 }
