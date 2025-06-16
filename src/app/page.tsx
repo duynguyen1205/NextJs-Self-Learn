@@ -3,18 +3,23 @@ import Link from 'next/link'
 import '@/styles/app.css';
 import AppTable from './components/app.table';
 import { useEffect } from 'react';
+import useSWR from 'swr';
+
 export default function Home() {
 
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const { data, error, isLoading } = useSWR(
+    "http://localhost:8000/blogs",
+    fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  }
+  );
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch('http://localhost:8000/blogs');
-      const data = await res.json();
-      console.log(data);
-    }
-    fetchData();
-  }, []);
+  if (error) return "An error has occurred.";
+  if (isLoading) return "Loading...";
+  console.log(data);
   return (
     <div>
       <ul>
