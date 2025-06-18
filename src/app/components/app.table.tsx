@@ -6,6 +6,7 @@ import ModalAddNewBlog from './create.model';
 import { useState } from 'react';
 import ModalUpdateBlog from './update.model';
 import Link from 'next/link';
+import ModalDelete from './delete.model';
 interface IProps {
     blogs: IBlog[];
 }
@@ -13,7 +14,9 @@ function AppTable(props: IProps) {
     const { blogs } = props;
     const [open, setOpen] = useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+    const [showDeleteModel, setShowDeleteModel] = useState<boolean>(false);
     const [item, setItem] = useState<IBlog | null>(null);
+    const [itemDelete, setItemDelete] = useState<IBlog | null>(null);
     const handleOpen = () => {
         setOpen(true);
     }
@@ -45,7 +48,10 @@ function AppTable(props: IProps) {
                                         setOpenUpdate(true);
                                         setItem(blog);
                                     }}>Edit</Button>
-                                    <Button variant='danger'>Delete</Button>
+                                    <Button variant='danger' onClick={() => {
+                                        setShowDeleteModel(true);
+                                        setItemDelete(blog);
+                                    }}>Delete</Button>
                                 </td>
                             </tr>
                         );
@@ -62,6 +68,12 @@ function AppTable(props: IProps) {
                 setShowModel={setOpenUpdate}
                 item={item}
                 setItem={setItem}
+            />
+            <ModalDelete
+                showDeleteModel={showDeleteModel}
+                setShowDeleteModel={setShowDeleteModel}
+                item={itemDelete}
+                setItem={setItemDelete}
             />
         </>
 
