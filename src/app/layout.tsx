@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppHeader />
-        <Container>
+        <Container style={{ minHeight: "calc(100vh - 170px)" }} className="mt-3">
           {children}
         </Container>
         <AppFooter />

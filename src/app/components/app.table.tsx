@@ -4,12 +4,16 @@ import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import ModalAddNewBlog from './create.model';
 import { useState } from 'react';
+import ModalUpdateBlog from './update.model';
+import Link from 'next/link';
 interface IProps {
     blogs: IBlog[];
 }
 function AppTable(props: IProps) {
     const { blogs } = props;
     const [open, setOpen] = useState<boolean>(false);
+    const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+    const [item, setItem] = useState<IBlog | null>(null);
     const handleOpen = () => {
         setOpen(true);
     }
@@ -36,8 +40,11 @@ function AppTable(props: IProps) {
                                 <td>{blog.title}</td>
                                 <td>{blog.author}</td>
                                 <td>
-                                    <Button>View</Button>
-                                    <Button variant='warning' className='mx-3'>Edit</Button>
+                                    <Link className='btn btn-primary' href={`blogs/${blog.id}`}>View</Link>
+                                    <Button variant='warning' className='mx-3' onClick={() => {
+                                        setOpenUpdate(true);
+                                        setItem(blog);
+                                    }}>Edit</Button>
                                     <Button variant='danger'>Delete</Button>
                                 </td>
                             </tr>
@@ -48,7 +55,14 @@ function AppTable(props: IProps) {
             </Table>
             <ModalAddNewBlog
                 showModel={open}
-                setShowModel={setOpen} />
+                setShowModel={setOpen}
+            />
+            <ModalUpdateBlog
+                showModel={openUpdate}
+                setShowModel={setOpenUpdate}
+                item={item}
+                setItem={setItem}
+            />
         </>
 
     );
