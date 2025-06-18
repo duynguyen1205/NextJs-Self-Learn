@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import { toast } from 'react-toastify';
 interface IProps {
     showModel: boolean;
     setShowModel: (value: boolean) => void;
@@ -21,9 +21,26 @@ function ModalAddNewBlog(props: IProps) {
 
     const handleSubmit = async () => {
         if (!title || !author || !content) {
-            alert("Please fill in all fields");
+            toast.error('Please fill in all fields!');
             return;
         }
+
+        fetch("http://localhost:8000/blogs",
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify({ title, author, content })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    toast.success('Create new blog successfully!');
+                    handleClose();
+                }
+            })
     }
     return (
         <>
